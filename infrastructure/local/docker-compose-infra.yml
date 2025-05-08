@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:14-alpine
+    container_name: issuer-postgres
     hostname: postgres
     environment:
       - PGPORT=5432
@@ -36,6 +37,7 @@ services:
 
   test_local_files_apache:
     image: httpd:2.4-alpine
+    container_name: issuer-test-local-files-apache
     ports:
       - '8080:80'
     volumes:
@@ -43,6 +45,7 @@ services:
       - ./test_data/schema:/usr/local/apache2/htdocs:ro
   redis:
     image: redis:6-alpine
+    container_name: issuer-redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -53,6 +56,7 @@ services:
 
   vault:
     image: vault:1.13.2
+    container_name: issuer-vault
     volumes:
       - ./.vault/config:/vault/config
       - ./.vault/scripts:/vault/scripts
@@ -68,15 +72,7 @@ services:
     cap_add:
       - IPC_LOCK
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--spider",
-          "--proxy",
-          "off",
-          "http://vault:8200/v1/sys/health?standbyok=true",
-        ]
+      test: [ "CMD", "wget", "--spider", "--proxy", "off", "http://vault:8200/v1/sys/health?standbyok=true" ]
       interval: 10s
       timeout: 3s
       retries: 10
@@ -85,7 +81,7 @@ services:
 
 networks:
   default:
-      name: issuer-network
+    name: issuer-network
 
 volumes:
   postgres-data:

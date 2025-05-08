@@ -60,13 +60,13 @@ function addErrorToPath(inputErrors: InputErrors, path: string[], error: string)
     const value = (key && inputErrors[key]) || {};
     return key
       ? {
-          ...inputErrors,
-          [key]: addErrorToPath(
-            typeof value === "string" ? {} : value,
-            path.slice(1, path.length),
-            error
-          ),
-        }
+        ...inputErrors,
+        [key]: addErrorToPath(
+          typeof value === "string" ? {} : value,
+          path.slice(1, path.length),
+          error
+        ),
+      }
       : inputErrors;
   } else {
     return key ? { ...inputErrors, [key]: error } : inputErrors;
@@ -140,7 +140,7 @@ export function IssueCredentialForm({
         try {
           const ajv =
             jsonSchema.data.jsonSchemaProps.$schema ===
-            "https://json-schema.org/draft/2020-12/schema"
+              "https://json-schema.org/draft/2020-12/schema"
               ? new Ajv2020({ allErrors: true })
               : new Ajv({ allErrors: true });
           addFormats(ajv);
@@ -245,9 +245,9 @@ export function IssueCredentialForm({
               const parsedRecord = z.record(z.unknown()).safeParse(initialValues[curr.name] || {});
               return parsedRecord.success
                 ? {
-                    ...acc,
-                    [curr.name]: computeFormObjectInitialValues(curr, parsedRecord.data),
-                  }
+                  ...acc,
+                  [curr.name]: computeFormObjectInitialValues(curr, parsedRecord.data),
+                }
                 : acc;
             }
             default: {
@@ -277,12 +277,12 @@ export function IssueCredentialForm({
           const credentialSubject = extractCredentialSubjectAttributeWithoutId(jsonSchema);
           const initialValuesWithSchemaValues: Store = credentialSubject
             ? {
-                ...initialValues,
-                credentialSubject: computeFormObjectInitialValues(
-                  credentialSubject,
-                  initialValues.credentialSubject || {}
-                ),
-              }
+              ...initialValues,
+              credentialSubject: computeFormObjectInitialValues(
+                credentialSubject,
+                initialValues.credentialSubject || {}
+              ),
+            }
             : initialValues;
           form.setFieldsValue(initialValuesWithSchemaValues);
         } else {

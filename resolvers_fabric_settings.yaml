@@ -1,0 +1,14 @@
+beka:
+  orgName: "beka"
+  orgDomain: "org1.example.com"
+  orgMSP: "bekaMSP"
+  orgUsername: "bekaAdmin"
+  orgPeerEndpoint: "dns://localhost:7051"
+  orgPeerName: "peer0"
+  orgPeerHostAlias: "beka-peer-host-alias"
+  orgCryptoPath: "beka-crypto-path"
+  chainCode: "identity"
+  channelID: "mychannel"
+  networkFlag: 0b0011_0001
+  chainID: 2025
+  method: iden3

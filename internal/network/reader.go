@@ -14,6 +14,14 @@ import (
 	"github.com/polygonid/sh-id-platform/internal/log"
 )
 
+func GetEthResolverConfigs(ctx context.Context, cfg *config.Configuration) (io.Reader, error) {
+	return GetReaderFromConfig(cfg, ctx)
+}
+
+func GetFabricResolverConfigs(ctx context.Context, cfg *config.Configuration) (io.Reader, error) {
+	return readFileFromPath(ctx, cfg.NetworkResolverFabric)
+}
+
 // GetReaderFromConfig returns a reader for the network resolver settings file
 func GetReaderFromConfig(cfg *config.Configuration, ctx context.Context) (io.Reader, error) {
 	var reader io.Reader

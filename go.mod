@@ -1,6 +1,8 @@
 module github.com/polygonid/sh-id-platform
 
-go 1.22.1
+go 1.23
+
+toolchain go1.23.3
 
 require (
 	github.com/alicebob/miniredis/v2 v2.33.0
@@ -20,6 +22,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.7
 	github.com/hashicorp/vault/api v1.14.0
 	github.com/hashicorp/vault/api/auth/userpass v0.7.0
+	github.com/hyperledger/fabric-gateway v1.7.1
 	github.com/iden3/contracts-abi/onchain-credential-status-resolver/go/abi v0.0.0-20230911113809-c58b7e7a69b0
 	github.com/iden3/contracts-abi/state/go/abi v1.0.2-0.20230911112726-4533c5701af1
 	github.com/iden3/go-circuits/v2 v2.4.0
@@ -53,9 +56,10 @@ require (
 	github.com/piprate/json-gold v0.5.1-0.20230111113000-6ddbe6e6f19f
 	github.com/pkg/errors v0.9.1
 	github.com/pressly/goose/v3 v3.22.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/valkey-io/valkey-go v1.0.45
-	golang.org/x/crypto v0.26.0
+	golang.org/x/crypto v0.33.0
+	google.golang.org/grpc v1.69.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -145,7 +149,7 @@ require (
 	github.com/getsentry/sentry-go v0.27.0 // indirect
 	github.com/ghostiam/protogetter v0.3.6 // indirect
 	github.com/go-critic/go-critic v0.11.4 // indirect
-	github.com/go-jose/go-jose/v4 v4.0.1 // indirect
+	github.com/go-jose/go-jose/v4 v4.0.4 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
@@ -189,6 +193,7 @@ require (
 	github.com/hexops/gotextdiff v1.0.3 // indirect
 	github.com/holiman/bloomfilter/v2 v2.0.3 // indirect
 	github.com/holiman/uint256 v1.3.1 // indirect
+	github.com/hyperledger/fabric-protos-go-apiv2 v0.3.4 // indirect
 	github.com/iden3/contracts-abi/rhs-storage/go/abi v0.0.0-20231006141557-7d13ef7e3c48 // indirect
 	github.com/iden3/go-iden3-core v1.0.2 // indirect
 	github.com/iden3/go-rapidsnark/verifier v0.0.5 // indirect
@@ -243,6 +248,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/mgechev/revive v1.3.9 // indirect
+	github.com/miekg/pkcs11 v1.1.1 // indirect
 	github.com/minio/sha256-simd v1.0.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
@@ -342,13 +348,14 @@ require (
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20240314144324-c7f7c6466f7f // indirect
 	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241015192408-796eee8c2d53 // indirect
+	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/go-jose/go-jose.v2 v2.6.3 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

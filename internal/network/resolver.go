@@ -36,6 +36,10 @@ const (
 	None = "None"
 )
 
+const (
+	ChainFabric = "Fabric"
+)
+
 type resolverPrefix string
 
 // StateResolvers type
@@ -50,6 +54,7 @@ type ResolverClientConfig struct {
 // Resolver holds the resolver
 type Resolver struct {
 	ethereumClients    map[resolverPrefix]ResolverClientConfig
+	fabricClients      map[resolverPrefix]*FabricClient
 	rhsSettings        map[resolverPrefix]RhsSettings
 	supportedContracts map[string]*abi.State
 	stateResolvers     map[string]pubsignals.StateResolver
@@ -94,9 +99,50 @@ type ResolverSettings map[string]map[string]struct {
 	Method                 string        `yaml:"method"`
 }
 
+func NewResolver(ctx context.Context, cfg config.Configuration, kms *kms.KMS, reader io.Reader) (*Resolver, error) {
+	resolver, err := ParseEthResolverConfigs(ctx, &cfg, kms, reader)
+	if err != nil {
+		return nil, err
+	}
+	resolver, err = ParseFabricResolverConfigs(ctx, &cfg, resolver)
+	if err != nil {
+		return nil, err
+	}
+	return resolver, nil
+}
+
+func ParseFabricResolverConfigs(ctx context.Context, cfg *config.Configuration, resolver *Resolver) (*Resolver, error) {
+	if resolver == nil {
+		return resolver, errors.New("resolver or cfg is nil")
+	}
+	if cfg == nil {
+		return resolver, errors.New("cfg is nil")
+	}
+	reader, err := GetFabricResolverConfigs(ctx, cfg)
+	if err != nil {
+		return resolver, err
+	}
+	fabricSettings := FabricSettings{}
+	if err := yaml.NewDecoder(reader).Decode(&fabricSettings); err != nil {
+		return nil, fmt.Errorf("invalid fabric resolver yaml file: %v", fabricSettings)
+	}
+	var printer strings.Builder
+	for networkName, fabricSetting := range fabricSettings {
+		printer.WriteString(fmt.Sprintf(", networkName: %s", networkName))
+		fabricClient, err := CreateFabricClient(ctx, &fabricSetting)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create fabric client: %w", err)
+		}
+		resolverPrefixKey := getResolverPrefixKey(ChainFabric, networkName)
+		resolver.fabricClients[resolverPrefix(resolverPrefixKey)] = fabricClient
+	}
+	log.Info(ctx, "fabric resolver settings", "settings:", printer.String())
+	return resolver, nil
+}
+
 // NewResolver returns a new Network Resolver
 // It reads the resolver settings from the reader and initializes the Network connection
-func NewResolver(ctx context.Context, cfg config.Configuration, kms *kms.KMS, reader io.Reader) (*Resolver, error) {
+func ParseEthResolverConfigs(ctx context.Context, cfg *config.Configuration, kms *kms.KMS, reader io.Reader) (*Resolver, error) {
 	rs, err := parseResolversSettings(ctx, reader)
 	if err != nil {
 		return nil, errors.New("failed to parse resolver settings")

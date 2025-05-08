@@ -1,19 +1,21 @@
 services:
   ui:
     image: issuernode-ui:local
+    container_name: issuer-ui
     ports:
       - "8088:80"
     env_file:
       - ../../.env-issuer
       - ../../.env-ui
     healthcheck:
-      test: ["CMD", "curl", "-f", "localhost/health"]
+      test: [ "CMD", "curl", "-f", "localhost/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   api:
     image: issuernode-api:local
+    container_name: issuer-api
     ports:
       - "3001:3001"
     env_file:
@@ -21,8 +23,9 @@ services:
     volumes:
       - ../../localstoragekeys:/localstoragekeys:rw
       - ../../resolvers_settings.yaml:/resolvers_settings.yaml
+      - ../../resolvers_fabric_settings.yaml:/resolvers_fabric_settings.yaml
     healthcheck:
-      test: ["CMD", "curl", "-f", "localhost:3001/status"]
+      test: [ "CMD", "curl", "-f", "localhost:3001/status" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,21 +33,24 @@ services:
 
   notifications:
     image: issuernode-api:local
+    container_name: issuer-notifications
     ports:
       - "3004:3004"
     env_file:
       - ../../.env-issuer
     volumes:
       - ../../resolvers_settings.yaml:/resolvers_settings.yaml
+      - ../../resolvers_fabric_settings.yaml:/resolvers_fabric_settings.yaml
     command: sh -c "sleep 4s && ./notifications"
     healthcheck:
-      test: ["CMD", "curl", "-f", "localhost:3004/status"]
+      test: [ "CMD", "curl", "-f", "localhost:3004/status" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   pending_publisher:
     image: issuernode-api:local
+    container_name: issuer-pending-publisher
     ports:
       - "3005:3005"
     env_file:
@@ -52,9 +58,10 @@ services:
     volumes:
       - ../../localstoragekeys:/localstoragekeys:rw
       - ../../resolvers_settings.yaml:/resolvers_settings.yaml
+      - ../../resolvers_fabric_settings.yaml:/resolvers_fabric_settings.yaml
     command: sh -c "sleep 4s &&  ./pending_publisher"
     healthcheck:
-      test: ["CMD", "curl", "-f", "localhost:3005/status"]
+      test: [ "CMD", "curl", "-f", "localhost:3005/status" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -62,3 +69,9 @@ services:
 networks:
   default:
     name: issuer-network
+
+volumes:
+  postgres-data:
+  vault-plugins:
+  vault-data:
+  vault-file:

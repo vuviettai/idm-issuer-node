@@ -48,6 +48,7 @@ type Configuration struct {
 	OnChainCheckStatusFrequency time.Duration `env:"ISSUER_ONCHAIN_CHECK_STATUS_FREQUENCY"`
 	NetworkResolverPath         string        `env:"ISSUER_RESOLVER_PATH"`
 	NetworkResolverFile         *string       `env:"ISSUER_RESOLVER_FILE"`
+	NetworkResolverFabric       string        `env:"ISSUER_RESOLVER_FABRIC"`
 	IssuerName                  string        `env:"ISSUER_ISSUER_NAME"`
 	IssuerLogo                  string        `env:"ISSUER_ISSUER_LOGO"`
 	Database                    Database
