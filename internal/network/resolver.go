@@ -126,6 +126,9 @@ func ParseFabricResolverConfigs(ctx context.Context, cfg *config.Configuration, 
 	if err := yaml.NewDecoder(reader).Decode(&fabricSettings); err != nil {
 		return nil, fmt.Errorf("invalid fabric resolver yaml file: %v", fabricSettings)
 	}
+	if resolver.fabricClients == nil {
+		resolver.fabricClients = make(map[resolverPrefix]*FabricClient)
+	}
 	var printer strings.Builder
 	for networkName, fabricSetting := range fabricSettings {
 		printer.WriteString(fmt.Sprintf(", networkName: %s", networkName))
