@@ -62,7 +62,7 @@ services:
       - ../../resolvers_settings.yaml:/resolvers_settings.yaml
       - ../../resolvers_fabric_settings.yaml:/resolvers_fabric_settings.yaml
       - ../../../../fabric-samples/test-network/organizations:/opt/organizations
-    command: sh -c "sleep 4s &&  ./pending_publisher"
+    command: sh -c "sleep 4s && ./migrate && ./pending_publisher"
     healthcheck:
       test: [ "CMD", "curl", "-f", "localhost:3005/status" ]
       interval: 10s

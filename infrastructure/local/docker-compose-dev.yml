@@ -1,0 +1,22 @@
+services:
+  issuer-dev:
+    image: issuernode-dev:local
+    container_name: issuer-dev
+    env_file:
+      - ../../.env-issuer
+    environment:
+      - ISSUER_RESOLVER_PATH=/resolvers_settings.yaml
+      - ISSUER_RESOLVER_FABRIC=/resolvers_fabric_settings.yaml
+      - ISSUER_CIRCUIT_PATH=/issuer-node/pkg/credentials/circuits
+    volumes:
+      - ../../localstoragekeys:/localstoragekeys:rw
+      - ../../resolvers_settings.yaml:/resolvers_settings.yaml
+      - ../../resolvers_fabric_settings.yaml:/resolvers_fabric_settings.yaml
+      - ../../../../fabric-samples/test-network/organizations:/opt/organizations
+      - ../../:/issuer-node
+    working_dir: /issuer-node
+    entrypoint: sh -c "sleep infinity"
+
+networks:
+  default:
+    name: issuer-network

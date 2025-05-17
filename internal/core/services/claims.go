@@ -105,10 +105,12 @@ func NewClaim(repo ports.ClaimRepository, idenSrv ports.IdentityService, qrServi
 func (c *claim) Save(ctx context.Context, req *ports.CreateClaimRequest) (*domain.Claim, error) {
 	claim, err := c.CreateCredential(ctx, req)
 	if err != nil {
+		log.Error(ctx, "create credential", "err", err, "req", req)
 		return nil, err
 	}
 	claim.ID, err = c.icRepo.Save(ctx, c.storage.Pgx, claim)
 	if err != nil {
+		log.Error(ctx, "save claim", "err", err, "claim", claim)
 		return nil, err
 	}
 	if req.SignatureProof {
@@ -818,7 +820,6 @@ func (c *claim) newVerifiableCredential(ctx context.Context, claimReq *ports.Cre
 	}
 
 	credentialSubject["type"] = claimReq.Type
-
 	latestIssuerState, err := c.identitySrv.GetLatestStateByID(ctx, *claimReq.DID)
 	if err != nil {
 		log.Error(ctx, "getting latest issuer state", "err", err)

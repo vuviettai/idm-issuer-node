@@ -11,9 +11,11 @@ LOCAL_DEV_PATH = $(shell pwd)/infrastructure/local
 DOCKER_COMPOSE_FILE := $(LOCAL_DEV_PATH)/docker-compose.yml
 DOCKER_COMPOSE_FILE_INFRA := $(LOCAL_DEV_PATH)/docker-compose-infra.yml
 DOCKER_COMPOSE_FULL_FILE := $(LOCAL_DEV_PATH)/docker-compose-full.yml
+DOCKER_COMPOSE_DEV_FILE := $(LOCAL_DEV_PATH)/docker-compose-dev.yml
 DOCKER_COMPOSE_CMD := docker compose -p issuer -f $(DOCKER_COMPOSE_FILE)
 DOCKER_COMPOSE_FULL_CMD := docker compose -p issuer -f $(DOCKER_COMPOSE_FULL_FILE)
 DOCKER_COMPOSE_INFRA_CMD := docker compose -p issuer -f $(DOCKER_COMPOSE_FILE_INFRA)
+DOCKER_COMPOSE_DEV_CMD := docker compose -p issuer -f $(DOCKER_COMPOSE_DEV_FILE)
 ENVIRONMENT := ${ISSUER_ENVIRONMENT}
 
 ISSUER_KMS_PROVIDER_LOCAL_STORAGE_FILE_PATH := ${ISSUER_KMS_PROVIDER_LOCAL_STORAGE_FILE_PATH}
@@ -267,3 +269,11 @@ print-commands:
 clean-volumes:
 	$(DOCKER_COMPOSE_INFRA_CMD) down -v
 	$(DOCKER_COMPOSE_FULL_CMD) down -v
+
+.PHONY: build-dev
+build-dev:
+	docker build -t issuernode-dev:local -f ./Dockerfile.dev .
+
+.PHONY: dev
+dev: validate_issuer_resolver_file validate_localstorage_file up
+	$(DOCKER_COMPOSE_DEV_CMD) up -d
