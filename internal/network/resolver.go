@@ -148,7 +148,7 @@ func ParseFabricResolverConfigs(ctx context.Context, cfg *config.Configuration, 
 func ParseEthResolverConfigs(ctx context.Context, cfg *config.Configuration, kms *kms.KMS, reader io.Reader) (*Resolver, error) {
 	rs, err := parseResolversSettings(ctx, reader)
 	if err != nil {
-		return nil, errors.New("failed to parse resolver settings")
+		return nil, errors.New("failed to parse eth resolver settings")
 	}
 
 	ethereumClients := make(map[resolverPrefix]ResolverClientConfig)
